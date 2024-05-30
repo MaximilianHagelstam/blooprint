@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Go v1.22.0
+- Go v1.22.3
 - Docker
 
 ## Get started

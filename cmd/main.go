@@ -22,7 +22,7 @@ func main() {
 	db := data.NewDB()
 	repo := data.NewRepo(db)
 
-	api := app.Group("/api/v1")
+	api := app.Group("/api")
 
 	api.Get("/posts", handlers.GetPostsHandler(repo))
 	api.Get("/posts/:id", handlers.GetPostByIDHandler(repo))
