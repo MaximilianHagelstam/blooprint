@@ -15,7 +15,6 @@ func (r *repo) GetPosts() (*[]data.Post, error) {
 
 func (r *repo) GetPostByID(id string) (*data.Post, error) {
 	return &data.Post{ID: "acb123", Caption: "Test"}, nil
-
 }
 
 func (r *repo) DeletePost(id string) error {
