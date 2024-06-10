@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"gostarter/internal/data"
+	"gostarter/internal/database"
 	"gostarter/internal/handlers"
+	"gostarter/internal/repository"
 	"os"
 	"strconv"
 
@@ -19,14 +20,16 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
-	db := data.NewDB()
-	repo := data.NewRepo(db)
+	db := database.New()
 
-	api := app.Group("/api")
+	postHandlerConfig := &handlers.PostHandlerConfig{
+		PostRepository: repository.NewPostRepository(db),
+	}
 
-	api.Get("/posts", handlers.GetPostsHandler(repo))
-	api.Get("/posts/:id", handlers.GetPostByIDHandler(repo))
-	api.Delete("/posts/:id", handlers.DeletePostHandler(repo))
+	r := app.Group("/api/v1")
+	r.Get("/posts", handlers.GetPostsHandler(postHandlerConfig))
+	r.Get("/posts/:id", handlers.GetPostByIDHandler(postHandlerConfig))
+	r.Delete("/posts/:id", handlers.DeletePostHandler(postHandlerConfig))
 
 	port, _ := strconv.Atoi(os.Getenv("PORT"))
 	err := app.Listen(fmt.Sprintf(":%d", port))

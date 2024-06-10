@@ -1,9 +1,8 @@
-package data
+package database
 
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"os"
 
 	_ "github.com/joho/godotenv/autoload"
@@ -18,15 +17,11 @@ var (
 	host     = os.Getenv("DB_HOST")
 )
 
-func NewDB() *sql.DB {
+func New() *sql.DB {
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", username, password, host, port, database)
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
+		panic(fmt.Sprintf("cannot connect to db: %s", err))
 	}
 	return db
 }

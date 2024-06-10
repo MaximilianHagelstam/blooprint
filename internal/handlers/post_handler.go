@@ -1,14 +1,18 @@
 package handlers
 
 import (
-	"gostarter/internal/data"
+	"gostarter/internal/repository"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetPostsHandler(r data.Repo) fiber.Handler {
+type PostHandlerConfig struct {
+	PostRepository repository.PostRepository
+}
+
+func GetPostsHandler(config *PostHandlerConfig) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		posts, err := r.GetPosts()
+		posts, err := config.PostRepository.GetPosts()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}
@@ -16,10 +20,10 @@ func GetPostsHandler(r data.Repo) fiber.Handler {
 	}
 }
 
-func GetPostByIDHandler(r data.Repo) fiber.Handler {
+func GetPostByIDHandler(config *PostHandlerConfig) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
-		post, err := r.GetPostByID(id)
+		post, err := config.PostRepository.GetPostByID(id)
 		if err != nil {
 			return fiber.ErrNotFound
 		}
@@ -27,10 +31,10 @@ func GetPostByIDHandler(r data.Repo) fiber.Handler {
 	}
 }
 
-func DeletePostHandler(r data.Repo) fiber.Handler {
+func DeletePostHandler(config *PostHandlerConfig) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
-		err := r.DeletePost(id)
+		err := config.PostRepository.DeletePost(id)
 		if err != nil {
 			return fiber.ErrNotFound
 		}

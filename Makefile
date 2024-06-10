@@ -6,6 +6,10 @@ build:
 run:
 	@go run cmd/main.go
 
+# Test the application
+test:
+	@go test ./... -v -cover
+
 # Create DB container
 db-up:
 	@docker compose up
@@ -13,10 +17,6 @@ db-up:
 # Shutdown DB container
 db-down:
 	@docker compose down
-
-# Test the application
-test:
-	@go test ./tests -v
 
 # Clean the binary
 clean:

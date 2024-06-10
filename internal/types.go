@@ -1,4 +1,4 @@
-package data
+package internal
 
 type Post struct {
 	ID      string `json:"id"`

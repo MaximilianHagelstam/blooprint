@@ -1,4 +1,4 @@
-package tests
+package handlers
 
 import (
 	"gostarter/internal/handlers"
@@ -9,20 +9,28 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func TestGetPostsHandler(t *testing.T) {
+func SetupTests() *fiber.App {
 	app := fiber.New()
-	repo := mocks.NewRepo()
-	app.Get("/api/posts", handlers.GetPostsHandler(repo))
+	app.Get("/api/v1/posts", handlers.GetPostsHandler(&handlers.PostHandlerConfig{
+		PostRepository: mocks.NewPostRepository(),
+	}))
+	return app
+}
 
-	req, err := http.NewRequest("GET", "/api/posts", nil)
+func TestGetPostsHandler(t *testing.T) {
+	app := SetupTests()
+
+	req, err := http.NewRequest("GET", "/api/v1/posts", nil)
 	if err != nil {
-		t.Fatalf("error creating request. Err: %v", err)
+		t.Fatalf("error creating request: %v", err)
 	}
+
 	resp, err := app.Test(req)
 	if err != nil {
-		t.Fatalf("error making request to server. Err: %v", err)
+		t.Fatalf("error making request to server: %v", err)
 	}
+
 	if resp.StatusCode != fiber.StatusOK {
-		t.Errorf("expected status OK; got %v", resp.Status)
+		t.Errorf("expected status 200, got %v", resp.Status)
 	}
 }
