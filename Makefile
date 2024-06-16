@@ -1,5 +1,5 @@
 #!make
-include .env
+-include .env
 
 build: # Build the application	
 	@go build -o bin/main cmd/main.go
@@ -59,4 +59,4 @@ migrations-down: # Run all down migrations
 help: # Print help
 	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
-.PHONY: build run test test-coverage db-up db-down db-status clean lint docker-build docker-run help
+.PHONY: build run test test-coverage db-start db-stop db-status clean lint docker-build docker-run help
