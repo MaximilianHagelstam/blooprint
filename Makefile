@@ -37,11 +37,11 @@ watch: # Live reload
 
 lint: # Lint
 	@if command -v golangci-lint > /dev/null; then \
-		golangci-lint run; \
+		golangci-lint run ./...; \
 	else \
 		echo "installing golangci-lint..."; \
 		go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest; \
-		golangci-lint run; \
+		golangci-lint run ./...; \
 	fi
 
 docker-build: # Build docker image
