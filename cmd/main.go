@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/log"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	_ "github.com/joho/godotenv/autoload"
@@ -20,10 +21,13 @@ func main() {
 	app.Use(recover.New())
 	app.Use(logger.New())
 
+	logger := log.DefaultLogger()
+
 	db := database.New()
 
 	postHandlerConfig := &handlers.PostHandlerConfig{
 		PostRepository: repository.NewPostRepository(db),
+		Logger:         logger,
 	}
 
 	r := app.Group("/api/v1")

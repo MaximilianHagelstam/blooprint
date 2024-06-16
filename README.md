@@ -1,5 +1,7 @@
 # gostarter
 
+Template for quickly bootstrapping REST API's with Go.
+
 ## Prerequisites
 
 - Go v1.22.3
@@ -39,8 +41,7 @@ make run
 - Database migrations
 - GitHub Actions
 - Linting
+- Logging
+- Live reloading
 - Containerization
-- Makefile
 - Environment variables
-
-## License
