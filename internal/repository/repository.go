@@ -8,6 +8,7 @@ import (
 
 type Repository interface {
 	GetPosts() (*[]internal.Post, error)
+	CreatePost(post *internal.Post) error
 }
 
 type repository struct {

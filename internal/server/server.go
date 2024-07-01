@@ -27,4 +27,5 @@ func New() *Server {
 func (s *Server) RegisterRoutes() {
 	r := s.App.Group("/api")
 	r.Get("/posts", s.GetPostsHandler)
+	r.Post("/posts", s.CreatePostHandler)
 }

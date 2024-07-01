@@ -22,3 +22,11 @@ func (r *repository) GetPosts() (*[]internal.Post, error) {
 
 	return &posts, nil
 }
+
+func (r *repository) CreatePost(post *internal.Post) error {
+	_, err := r.db.Collection("posts").InsertOne(context.Background(), *post)
+	if err != nil {
+		return err
+	}
+	return nil
+}

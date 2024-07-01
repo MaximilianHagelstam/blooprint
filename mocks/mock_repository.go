@@ -14,3 +14,7 @@ func NewRepository() repository.Repository {
 func (r *mockRepository) GetPosts() (*[]internal.Post, error) {
 	return &[]internal.Post{{ID: "acb123", Caption: "Test"}}, nil
 }
+
+func (r *mockRepository) CreatePost(post *internal.Post) error {
+	return nil
+}
