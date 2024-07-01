@@ -1,12 +1,11 @@
 # gostarter
 
-Template for quickly bootstrapping REST API's with Go.
+Template for quickly bootstrapping a REST API with Go.
 
 ## Prerequisites
 
-- Go v1.22.3
+- Go v1.22
 - Docker
-- goose (`go install github.com/pressly/goose/v3/cmd/goose@latest`)
 
 ## Get started
 
@@ -19,16 +18,10 @@ cp .env.example .env
 2. Start database
 
 ```
-make db-start
+make db-up
 ```
 
-3. Run migrations
-
-```
-make migrations-up
-```
-
-4. Run server
+3. Run server
 
 ```
 make run
@@ -36,9 +29,8 @@ make run
 
 ## Features
 
-- Postgres database
+- MongoDB
 - Unit testing
-- Database migrations
 - GitHub Actions
 - Linting
 - Logging

@@ -1,11 +1,14 @@
-FROM golang:1.22
+FROM golang:1.22-alpine
 
 WORKDIR /app
 
-COPY ./ ./
+COPY go.* ./
+
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/main cmd/main.go
+COPY . .
+
+RUN go build -o /bin/main cmd/main.go
 
 FROM scratch
 
