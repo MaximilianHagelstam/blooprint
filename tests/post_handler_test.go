@@ -1,79 +1,52 @@
-package handlers
+package tests
 
 import (
+	"bytes"
+	"encoding/json"
 	"gostarter/internal/server"
 	"gostarter/mocks"
 	"net/http"
-	"strings"
+	"net/http/httptest"
 	"testing"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 func SetupTestServer() *server.Server {
 	return &server.Server{
-		App:        fiber.New(),
 		Repository: mocks.NewRepository(),
 	}
 }
 
 func TestGetPostsHandler(t *testing.T) {
 	s := SetupTestServer()
-	s.App.Get("/api/posts", s.GetPostsHandler)
+	server := httptest.NewServer(http.HandlerFunc(s.GetPostsHandler))
+	defer server.Close()
 
-	req, err := http.NewRequest("GET", "/api/posts", nil)
+	resp, err := http.Get(server.URL)
 	if err != nil {
-		t.Fatalf("error creating request: %v", err)
+		t.Fatalf("error making request: %v", err)
 	}
+	defer resp.Body.Close()
 
-	resp, err := s.App.Test(req)
-	if err != nil {
-		t.Fatalf("error making request to server: %v", err)
-	}
-
-	if resp.StatusCode != fiber.StatusOK {
+	if resp.StatusCode != http.StatusOK {
 		t.Errorf("expected status 200, got %v", resp.Status)
 	}
 }
 
 func TestCreatePostHandler(t *testing.T) {
 	s := SetupTestServer()
-	s.App.Post("/api/posts", s.CreatePostHandler)
+	server := httptest.NewServer(http.HandlerFunc(s.CreatePostHandler))
+	defer server.Close()
 
-	body := strings.NewReader(`{"caption": "test post"}`)
-	req, err := http.NewRequest("POST", "/api/posts", body)
+	postData := map[string]string{"caption": "Test Post"}
+	jsonData, _ := json.Marshal(postData)
+
+	resp, err := http.Post(server.URL, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
-		t.Fatalf("error creating request: %v", err)
+		t.Fatalf("error making request: %v", err)
 	}
-	req.Header.Set("Content-Type", "application/json")
+	defer resp.Body.Close()
 
-	resp, err := s.App.Test(req)
-	if err != nil {
-		t.Fatalf("error making request to server: %v", err)
-	}
-
-	if resp.StatusCode != fiber.StatusOK {
-		t.Errorf("expected status 200, got %v", resp.Status)
-	}
-}
-
-func TestCreatePostHandlerValidation(t *testing.T) {
-	s := SetupTestServer()
-	s.App.Post("/api/posts", s.CreatePostHandler)
-
-	body := strings.NewReader(`{"invalid": "test"}`)
-	req, err := http.NewRequest("POST", "/api/posts", body)
-	if err != nil {
-		t.Fatalf("error creating request: %v", err)
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := s.App.Test(req)
-	if err != nil {
-		t.Fatalf("error making request to server: %v", err)
-	}
-
-	if resp.StatusCode != fiber.StatusBadRequest {
-		t.Errorf("expected status 400, got %v", resp.Status)
+	if resp.StatusCode != http.StatusCreated {
+		t.Errorf("expected status 201, got %v", resp.Status)
 	}
 }

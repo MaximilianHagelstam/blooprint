@@ -1,6 +1,6 @@
 # gostarter
 
-Template for quickly bootstrapping a REST API with Go.
+Go REST API template.
 
 ## Prerequisites
 
@@ -27,13 +27,17 @@ make db-up
 make run
 ```
 
+## Stack
+
+- Chi
+- MongoDB
+
 ## Features
 
-- MongoDB
+- Database
 - Unit testing
+- Containerization
 - GitHub Actions
 - Linting
 - Logging
 - Live reloading
-- Containerization
-- Environment variables

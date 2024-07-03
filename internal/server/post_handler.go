@@ -1,31 +1,36 @@
 package server
 
 import (
+	"encoding/json"
 	"gostarter/internal"
-
-	"github.com/gofiber/fiber/v2"
+	"net/http"
 )
 
-func (s *Server) GetPostsHandler(c *fiber.Ctx) error {
+func (s *Server) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	posts, err := s.Repository.GetPosts()
 	if err != nil {
-		return fiber.ErrInternalServerError
+		http.Error(w, "Internal error", http.StatusInternalServerError)
+		return
 	}
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"posts": posts})
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(posts)
 }
 
-func (s *Server) CreatePostHandler(c *fiber.Ctx) error {
-	post := new(internal.Post)
-	if err := c.BodyParser(post); err != nil {
-		return fiber.ErrBadRequest
+func (s *Server) CreatePostHandler(w http.ResponseWriter, r *http.Request) {
+	var post internal.Post
+
+	err := json.NewDecoder(r.Body).Decode(&post)
+	if err != nil || post.Caption == "" {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
-	if post.Caption == "" {
-		return fiber.ErrBadRequest
+	if err := s.Repository.CreatePost(&post); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	if err := s.Repository.CreatePost(post); err != nil {
-		return fiber.ErrInternalServerError
-	}
-	return c.SendStatus(fiber.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 }

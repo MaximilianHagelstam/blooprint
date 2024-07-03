@@ -1,6 +1,3 @@
-#!make
--include .env
-
 build: # Build the application	
 	@go build -o bin/main cmd/main.go
 
@@ -8,9 +5,6 @@ run: # Run the application
 	@go run cmd/main.go
 
 test: # Run tests
-	@go test ./... -v
-
-test-coverage: # Run tests with coverage
 	@go test ./... -v -cover
 
 db-up: # Start DB container
@@ -18,12 +12,6 @@ db-up: # Start DB container
 
 db-down: # Stop DB container
 	@docker compose down mongo
-
-web-up: # Start web container
-	@docker compose up -d web
-
-web-down: # Stop web container
-	@docker compose down web
 
 clean: # Clean the binary
 	@go clean
@@ -50,4 +38,4 @@ lint: # Lint
 help: # Print help
 	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
-.PHONY: build run test test-coverage db-up db-down web-up web-down clean lint help
+.PHONY: run test db-up db-down clean lint help
