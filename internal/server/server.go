@@ -1,31 +1,56 @@
 package server
 
 import (
+	"fmt"
 	"gostarter/internal/database"
 	"gostarter/internal/repository"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
+	"time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/log"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/joho/godotenv/autoload"
 )
 
 type Server struct {
-	App        *fiber.App
 	Repository repository.Repository
-	logger     log.AllLogger
+	port       int
+	logger     *log.Logger
 }
 
-func New() *Server {
+func New() *http.Server {
+	port, _ := strconv.Atoi(os.Getenv("PORT"))
+	logger := log.Default()
 	db := database.New()
-	return &Server{
-		App:        fiber.New(),
-		Repository: repository.New(db),
-		logger:     log.DefaultLogger(),
+	repo := repository.New(db)
+
+	NewServer := &Server{
+		Repository: repo,
+		port:       port,
+		logger:     logger,
 	}
+
+	server := &http.Server{
+		Addr:         fmt.Sprintf(":%d", NewServer.port),
+		Handler:      NewServer.RegisterRoutes(),
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
+	}
+
+	return server
 }
 
-func (s *Server) RegisterRoutes() {
-	r := s.App.Group("/api")
-	r.Get("/posts", s.GetPostsHandler)
-	r.Post("/posts", s.CreatePostHandler)
+func (s *Server) RegisterRoutes() http.Handler {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
+	r.Get("/api/posts", s.GetPostsHandler)
+	r.Post("/api/posts", s.CreatePostHandler)
+
+	return r
 }
