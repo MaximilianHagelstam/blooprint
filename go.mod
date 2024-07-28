@@ -1,4 +1,4 @@
-module gostarter
+module blooprint
 
 go 1.22.3
 

@@ -1,10 +1,10 @@
 package tests
 
 import (
+	"blooprint/internal/server"
+	"blooprint/mocks"
 	"bytes"
 	"encoding/json"
-	"gostarter/internal/server"
-	"gostarter/mocks"
 	"net/http"
 	"net/http/httptest"
 	"testing"

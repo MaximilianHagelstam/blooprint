@@ -1,8 +1,8 @@
 package mocks
 
 import (
-	"gostarter/internal"
-	"gostarter/internal/repository"
+	"blooprint/internal"
+	"blooprint/internal/repository"
 )
 
 type mockRepository struct{}

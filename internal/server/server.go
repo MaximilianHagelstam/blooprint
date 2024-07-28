@@ -1,9 +1,9 @@
 package server
 
 import (
+	"blooprint/internal/database"
+	"blooprint/internal/repository"
 	"fmt"
-	"gostarter/internal/database"
-	"gostarter/internal/repository"
 	"log"
 	"net/http"
 	"os"

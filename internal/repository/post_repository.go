@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"blooprint/internal"
 	"context"
-	"gostarter/internal"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"

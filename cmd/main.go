@@ -1,8 +1,8 @@
 package main
 
 import (
+	"blooprint/internal/server"
 	"fmt"
-	"gostarter/internal/server"
 )
 
 func main() {

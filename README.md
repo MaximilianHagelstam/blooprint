@@ -1,4 +1,4 @@
-# gostarter
+# blooprint
 
 Go REST API template.
 

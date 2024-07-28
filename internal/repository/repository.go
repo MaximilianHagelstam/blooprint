@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"gostarter/internal"
+	"blooprint/internal"
 
 	"go.mongodb.org/mongo-driver/mongo"
 )

@@ -1,8 +1,8 @@
 package server
 
 import (
+	"blooprint/internal"
 	"encoding/json"
-	"gostarter/internal"
 	"net/http"
 )
 
