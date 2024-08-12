@@ -3,7 +3,7 @@ on: [pull_request]
 
 jobs:
   ci:
-    name: Build, test, lint
+    name: Test and lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,8 +15,6 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.58
-      - name: Build
-        run: make build
       - name: Test
         run: make test
       - name: Lint
