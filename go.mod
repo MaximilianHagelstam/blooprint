@@ -1,4 +1,4 @@
-module blooprint
+module github.com/maximilianhagelstam/blooprint
 
 go 1.22.3
 

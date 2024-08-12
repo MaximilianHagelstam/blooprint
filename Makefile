@@ -1,4 +1,4 @@
-build: # Build the application	
+build: # Build the application
 	@go build -o bin/main cmd/main.go
 
 run: # Run the application
@@ -7,10 +7,10 @@ run: # Run the application
 test: # Run tests
 	@go test ./... -v -cover
 
-db-up: # Start DB container
+db-up: # Start database container
 	@docker compose up -d mongo
 
-db-down: # Stop DB container
+db-down: # Stop database container
 	@docker compose down mongo
 
 clean: # Clean the binary
@@ -22,7 +22,7 @@ watch: # Live reload
 		air; \
 	else \
 		echo "installing air..."; \
-		go install github.com/cosmtrek/air@latest; \
+		go install github.com/air-verse/air@latest; \
 		air; \
 	fi
 

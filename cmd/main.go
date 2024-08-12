@@ -1,12 +1,13 @@
 package main
 
 import (
-	"blooprint/internal/server"
 	"fmt"
+
+	"github.com/maximilianhagelstam/blooprint/internal/http"
 )
 
 func main() {
-	s := server.New()
+	s := http.NewServer()
 
 	err := s.ListenAndServe()
 	if err != nil {

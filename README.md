@@ -4,7 +4,7 @@ Go REST API template.
 
 ## Prerequisites
 
-- Go v1.22
+- Go v1.22.x
 - Docker
 
 ## Get started
@@ -35,9 +35,9 @@ make run
 ## Features
 
 - Database
-- Unit testing
+- Unit tests
 - Containerization
 - GitHub Actions
+- Live reload
 - Linting
 - Logging
-- Live reloading
